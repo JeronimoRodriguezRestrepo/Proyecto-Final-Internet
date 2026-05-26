@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro EAFIT</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 500px; margin: 50px auto; padding: 20px; }
+        input, select { width: 100%; padding: 8px; margin: 8px 0; box-sizing: border-box; }
+        button { background: #003087; color: white; padding: 10px 20px; border: none; cursor: pointer; width: 100%; }
+        .success { color: green; background: #e8f5e9; padding: 10px; border-radius: 4px; }
+        .error { color: red; background: #ffebee; padding: 10px; border-radius: 4px; }
+        #msg { display: none; margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+    <h1>Universidad EAFIT — Registro</h1>
+    <p>Servidor: <strong>Servidor 2 (Español)</strong></p>
+
+    <div id="msg"></div>
+
+    <form id="regForm">
+        <label>Nombre completo:</label>
+        <input type="text" id="nombre" required>
+
+        <label>Comuna (1-10):</label>
+        <select id="comuna" required>
+            {% for i in range(1, 11) %}
+            <option value="{{ i }}">Comuna {{ i }}</option>
+            {% endfor %}
+        </select>
+
+        <label>Carrera de interés:</label>
+        <select id="carrera" required>
+            <option value="Medicina">Medicina</option>
+            <option value="Ingenieria">Ingeniería</option>
+            <option value="Abogacia">Abogacía</option>
+            <option value="Licenciatura">Licenciatura</option>
+        </select>
+
+        <button type="submit">Registrarse</button>
+    </form>
+
+    <script>
+        document.getElementById('regForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const data = new FormData();
+            data.append('nombre', document.getElementById('nombre').value);
+            data.append('comuna', document.getElementById('comuna').value);
+            data.append('carrera', document.getElementById('carrera').value);
+
+            const res = await fetch('/', {method: 'POST', body: data});
+            const msg = document.getElementById('msg');
+            if (res.ok) {
+                msg.className = 'success';
+                msg.textContent = '¡Registro exitoso! Bienvenido/a a EAFIT.';
+                document.getElementById('regForm').reset();
+            } else {
+                msg.className = 'error';
+                msg.textContent = 'Error al guardar. Por favor intente de nuevo.';
+            }
+            msg.style.display = 'block';
+        });
+    </script>
+</body>
+</html>
