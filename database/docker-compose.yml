@@ -1,0 +1,23 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: eafit_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root2025
+      MYSQL_DATABASE: registros
+      MYSQL_USER: eafit
+      MYSQL_PASSWORD: eafit2025
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - eafit_net
+
+networks:
+  eafit_net:
+    driver: bridge
+
+volumes:
+  db_data:
